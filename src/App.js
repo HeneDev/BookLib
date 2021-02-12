@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import firebase from 'firebase/app'
 
 function App() {
@@ -11,8 +11,28 @@ function App() {
   })
 
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [books, setBooks] = useState([])
 
-  const [error, setError] = useState('')
+  useEffect(() => {
+    async function fetchData() {
+      const snapshot = await db.collection('books').get()
+      snapshot.forEach((doc) => {
+        console.log(doc.id, '=>', doc.data())
+      })
+      const booksArray = []
+
+      snapshot.forEach((doc) => {
+        booksArray.push({
+          id: doc.id,
+          ...doc.data(),
+        })
+      })
+      setBooks(booksArray)
+    }
+
+    fetchData()
+  }, [])
 
   const onChange = (e) => {
     setBook({
@@ -28,15 +48,15 @@ function App() {
       const docRef = await db.collection('books').add({
         ...book,
         pages: parseInt(book.pages),
-        publishDate: new Date(book.publishDate),
+        publishDate: new Date(book.publishDate).toDateString(),
       })
 
-      console.log(docRef.id)
       setBook({
         title: '',
         pages: '',
         publishDate: '',
       })
+      setLoading(false)
     } catch (e) {
       console.log('error: ', error)
       setError('An error occurred while saving the book')
@@ -48,6 +68,7 @@ function App() {
     <div>
       <h1>Book Library</h1>
 
+      <h2>Add new Book</h2>
       <form onSubmit={onBookSubmit}>
         <div>
           <label htmlFor="book-title">Title:</label>
@@ -87,6 +108,21 @@ function App() {
         </div>
         {error && <p className="err">{error}</p>}
       </form>
+
+      <div className="book-list">
+        <h2>Book List</h2>
+        {books.map((book) => (
+          <div className="book-item">
+            <h4>{book.title}</h4>
+            <span>
+              <strong>Pages: </strong> {book.pages}
+            </span>
+            <span>
+              <strong> Publishing Date: </strong> {book.publishDate}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
