@@ -1,4 +1,5 @@
 import React from 'react'
+import Loading from './Loading'
 import styled, { css } from 'styled-components'
 
 const ButtonStyled = styled.button`
@@ -12,10 +13,10 @@ const ButtonStyled = styled.button`
   border: 1px solid lightGray;
 `
 
-function Button({ loading, label, style, ...rest }) {
+function Button({ loading, style, ...rest }) {
   return (
     <ButtonStyled disabled={loading} {...rest}>
-      {loading ? 'Loading' : label}
+      {loading ? <Loading /> : rest.children}
     </ButtonStyled>
   )
 }
