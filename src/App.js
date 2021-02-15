@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase/app'
+import BookList from './BookList'
+import { Button, Message, Field } from './ui/index.js'
 
 function App() {
   const db = firebase.firestore()
@@ -17,9 +19,6 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       const snapshot = await db.collection('books').get()
-      snapshot.forEach((doc) => {
-        console.log(doc.id, '=>', doc.data())
-      })
       const booksArray = []
 
       snapshot.forEach((doc) => {
@@ -70,8 +69,7 @@ function App() {
 
       <h2>Add new Book</h2>
       <form onSubmit={onBookSubmit}>
-        <div>
-          <label htmlFor="book-title">Title:</label>
+        <Field labelText="Title" id="book-title">
           <input
             type="text"
             value={book.title}
@@ -79,10 +77,9 @@ function App() {
             name="title"
             id="book_title"
           />
-        </div>
+        </Field>
 
-        <div>
-          <label htmlFor="book-pages">Number of pages:</label>
+        <Field labelText="Number of pages" id="book-pages">
           <input
             type="number"
             value={book.pages}
@@ -90,10 +87,9 @@ function App() {
             name="pages"
             id="book_pages"
           />
-        </div>
+        </Field>
 
-        <div>
-          <label htmlFor="book-publish-date">Date of publishing:</label>
+        <Field labelText="Date of publishing" id="book-publish-date">
           <input
             type="date"
             value={book.publishingDate}
@@ -101,28 +97,14 @@ function App() {
             name="publishDate"
             id="book_publishing_date"
           />
-        </div>
+        </Field>
 
         <div>
-          <button type="submit">{loading ? 'Loading' : 'Save'}</button>
+          <Button loading={loading} label="Save" type="submit" />
         </div>
-        {error && <p className="err">{error}</p>}
+        <Message message={error} type="error" />
       </form>
-
-      <div className="book-list">
-        <h2>Book List</h2>
-        {books.map((book) => (
-          <div className="book-item">
-            <h4>{book.title}</h4>
-            <span>
-              <strong>Pages: </strong> {book.pages}
-            </span>
-            <span>
-              <strong> Publishing Date: </strong> {book.publishDate}
-            </span>
-          </div>
-        ))}
-      </div>
+      <BookList books={books} />
     </div>
   )
 }
