@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Button, Message, Field, Modal } from '../ui'
 import { ToasterContext } from '../ui/ToasterContext'
 import firebase from 'firebase/app'
@@ -7,6 +8,8 @@ function BookForm() {
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [error, setError] = useState(null)
+
+  const history = useHistory()
 
   const [book, setBook] = useState({
     title: '',
@@ -35,6 +38,7 @@ function BookForm() {
       setLoading(false)
       setIsModalVisible(false)
       addToast({ text: 'Succesfully created a new book', type: 'success' })
+      history.push(`/book/${docRef.id}`)
     } catch (e) {
       console.log('error: ', error)
       setError('An error occurred while saving the book')

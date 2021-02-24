@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import BookItem from './BookItem'
+import BookForm from './BookForm'
 import Loading from '../ui/Loading'
 import firebase from 'firebase/app'
 
@@ -27,6 +28,7 @@ function BookList() {
 
   return (
     <div className="book-list">
+      <BookForm />
       <h2>Book List</h2>
       {!books.length ? (
         <Loading />
