@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import BookItem from './BookItem'
-import BookForm from './BookForm'
+import AddBook from './AddBook'
 import Loading from '../ui/Loading'
 import firebase from 'firebase/app'
 
 function BookList() {
-  const db = firebase.firestore()
-
   const [books, setBooks] = useState([])
 
   useEffect(() => {
+    const db = firebase.firestore()
+
     async function fetchData() {
       const snapshot = await db.collection('books').get()
       const booksArray = []
@@ -28,7 +28,7 @@ function BookList() {
 
   return (
     <div className="book-list">
-      <BookForm />
+      <AddBook />
       <h2>Book List</h2>
       {!books.length ? (
         <Loading />

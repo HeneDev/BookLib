@@ -23,13 +23,21 @@ function BookMenu({ url }) {
   return (
     <div>
       <StyledUl>
-        <li className={location.pathname === url && 'active'}>
+        <li className={(location.pathname === url && 'active').toString()}>
           <Link to={`${url}`}>General information</Link>
         </li>
-        <li className={location.pathname === `${url}/authors` && 'active'}>
+        <li
+          className={(
+            location.pathname === `${url}/authors` && 'active'
+          ).toString()}
+        >
           <Link to={`${url}/authors`}>Authors</Link>
         </li>
-        <li className={location.pathname === `${url}/photos` && 'active'}>
+        <li
+          className={(
+            location.pathname === `${url}/photos` && 'active'
+          ).toString()}
+        >
           <Link to={`${url}/photos`}>Photos</Link>
         </li>
       </StyledUl>

@@ -34,10 +34,10 @@ function BookDetails() {
           <Route path={`${match.path}`} exact>
             <BookGeneral book={book} />
           </Route>
-          <Route path={`${match.path}authors`}>
+          <Route path={`${match.path}/authors`}>
             <BookAuthors book={book} />
           </Route>
-          <Route path={`${match.path}photos`}>
+          <Route path={`${match.path}/photos`}>
             <BookPhotos book={book} />
           </Route>
         </Switch>
